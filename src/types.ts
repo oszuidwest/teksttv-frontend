@@ -5,7 +5,7 @@ const BaseSlideSchema = z.object({
 })
 
 export const ImageDataSchema = z.object({
-  url: z.string().url().describe('Image URL'),
+  url: z.url().describe('Image URL'),
   caption: z.string().optional().describe('Image caption'),
   attribution: z.string().optional().describe('Image attribution or credit'),
 })
@@ -24,10 +24,9 @@ const OptionalImageDataSchema = z.preprocess(
   ImageDataSchema.optional(),
 )
 
-export const ImageSlideDataSchema = BaseSlideSchema.merge(
-  ImageDataSchema,
-).extend({
+export const ImageSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('image'),
+  ...ImageDataSchema.shape,
 })
 
 export const TextSlideDataSchema = BaseSlideSchema.extend({
@@ -82,12 +81,12 @@ export const WeatherSlideDataSchema = BaseSlideSchema.extend({
 
 export const CommercialSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('commercial'),
-  url: z.string().url(),
+  url: z.url(),
 })
 
 export const CommercialTransitionSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('commercial_transition'),
-  url: z.string().url(),
+  url: z.url(),
 })
 
 export const SlideDataSchema = z.discriminatedUnion('type', [
