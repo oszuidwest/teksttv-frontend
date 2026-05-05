@@ -4,16 +4,36 @@ const BaseSlideSchema = z.object({
   duration: z.number().positive().describe('Display duration in milliseconds'),
 })
 
+export const ImageDataSchema = z.object({
+  url: z.url().describe('Image URL'),
+  caption: z.string().optional().describe('Image caption'),
+  attribution: z.string().optional().describe('Image attribution or credit'),
+})
+
+function normalizeOptionalImageData(value: unknown) {
+  // Upstream CMS emits null when a text slide has no sidebar image.
+  if (value === null) {
+    return undefined
+  }
+
+  return value
+}
+
+const OptionalImageDataSchema = z.preprocess(
+  normalizeOptionalImageData,
+  ImageDataSchema.optional(),
+)
+
 export const ImageSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('image'),
-  url: z.string().url(),
+  ...ImageDataSchema.shape,
 })
 
 export const TextSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('text'),
   title: z.string().describe('Slide title (HTML supported)'),
   body: z.string().describe('Main content (HTML supported)'),
-  image: z.string().describe('Optional sidebar image URL'),
+  image: OptionalImageDataSchema.describe('Optional sidebar image'),
 })
 
 export const WeatherDaySchema = z.object({
@@ -61,12 +81,12 @@ export const WeatherSlideDataSchema = BaseSlideSchema.extend({
 
 export const CommercialSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('commercial'),
-  url: z.string().url(),
+  url: z.url(),
 })
 
 export const CommercialTransitionSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('commercial_transition'),
-  url: z.string().url(),
+  url: z.url(),
 })
 
 export const SlideDataSchema = z.discriminatedUnion('type', [
@@ -93,6 +113,7 @@ export const ChannelPayloadSchema = z.object({
 })
 
 // Type inference
+export type ImageData = z.infer<typeof ImageDataSchema>
 export type ImageSlideData = z.infer<typeof ImageSlideDataSchema>
 export type TextSlideData = z.infer<typeof TextSlideDataSchema>
 export type WeatherDay = z.infer<typeof WeatherDaySchema>
