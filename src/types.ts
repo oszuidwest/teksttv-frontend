@@ -5,23 +5,36 @@ const BaseSlideSchema = z.object({
 })
 
 export const ImageDataSchema = z.object({
-  url: z.string().url(),
-  caption: z.string().optional(),
-  attribution: z.string().optional(),
+  url: z.string().url().describe('Image URL'),
+  caption: z.string().optional().describe('Image caption'),
+  attribution: z.string().optional().describe('Image attribution or credit'),
 })
 
-export const ImageSlideDataSchema = BaseSlideSchema.extend({
+function normalizeOptionalImageData(value: unknown) {
+  // Upstream CMS emits null when a text slide has no sidebar image.
+  if (value === null) {
+    return undefined
+  }
+
+  return value
+}
+
+const OptionalImageDataSchema = z.preprocess(
+  normalizeOptionalImageData,
+  ImageDataSchema.optional(),
+)
+
+export const ImageSlideDataSchema = BaseSlideSchema.merge(
+  ImageDataSchema,
+).extend({
   type: z.literal('image'),
-  url: z.string().url(),
-  caption: z.string().optional(),
-  attribution: z.string().optional(),
 })
 
 export const TextSlideDataSchema = BaseSlideSchema.extend({
   type: z.literal('text'),
   title: z.string().describe('Slide title (HTML supported)'),
   body: z.string().describe('Main content (HTML supported)'),
-  image: ImageDataSchema.describe('Sidebar image').optional(),
+  image: OptionalImageDataSchema.describe('Optional sidebar image'),
 })
 
 export const WeatherDaySchema = z.object({

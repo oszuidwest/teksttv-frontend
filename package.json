@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "tsc --noEmit && biome ci .",
+    "test": "bun test",
+    "check": "tsc --noEmit && bun test && biome ci .",
     "fix": "biome check --write .",
     "fix:unsafe": "biome check --write --unsafe ."
   },
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.8",
+    "@types/bun": "^1.3.13",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
     "typescript": "^5.9.3"
