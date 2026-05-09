@@ -30,7 +30,7 @@ function WindArrow({ direction }: { direction: string }) {
 
   return (
     <svg
-      className="h-[48px] w-[48px] shrink-0"
+      className="size-[48px] shrink-0"
       viewBox="0 0 40 40"
       style={{ transform: `rotate(${rotation}deg)` }}
     >
@@ -124,7 +124,7 @@ export function WeatherSlide({
                   <img
                     src={weatherIconSrc(day.icon)}
                     alt={day.description}
-                    className="h-[80px] w-[80px] shrink-0"
+                    className="size-[80px] shrink-0"
                     onError={(e) => {
                       const img = e.currentTarget
                       const fallback = `/icons/weather/${day.icon.replace(/[dn]$/, '')}.svg`

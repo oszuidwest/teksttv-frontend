@@ -39,7 +39,7 @@ export function Header({ theme }: { theme: 'green' | 'blue' }) {
         style={{ backgroundColor: c.pillBg }}
       >
         <svg
-          className="mr-[10px] h-[36px] w-[36px]"
+          className="mr-[10px] size-[36px]"
           viewBox="0 0 40 40"
           fill="none"
           stroke={c.clockStroke}
