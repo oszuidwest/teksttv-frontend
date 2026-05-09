@@ -1,4 +1,5 @@
 import type { TextSlideData } from '../../types'
+import { sanitizeRichText } from '../../utils/sanitize'
 
 const themes = {
   green: { border: '#82ba26' },
@@ -43,12 +44,18 @@ export function TextSlide({
             {/* Title (renders HTML entities) */}
             <h1
               className="mb-[44px] font-black text-[#1d1d1b] text-[58px] leading-[59px]"
-              dangerouslySetInnerHTML={{ __html: content.title }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeRichText(content.title),
+              }}
             />
 
             {/* Body */}
             <div className="font-[500] text-[#1d1d1b] text-[42px] leading-[58px]">
-              <div dangerouslySetInnerHTML={{ __html: content.body }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeRichText(content.body),
+                }}
+              />
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import type { TickerItem } from '../../types'
+import { sanitizeRichText } from '../../utils/sanitize'
 
 const themes = {
   green: { arrow: '#82ba26', tickerBg: '#e0eec9' },
@@ -39,7 +40,7 @@ export function Ticker({
         {label && (
           <span
             className="font-black text-[40px] text-black leading-none"
-            dangerouslySetInnerHTML={{ __html: label }}
+            dangerouslySetInnerHTML={{ __html: sanitizeRichText(label) }}
           />
         )}
 
@@ -60,7 +61,7 @@ export function Ticker({
 
         <span
           className="font-[500] text-[#1d1d1b] text-[40px] leading-none"
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeRichText(content) }}
         />
       </div>
     </div>

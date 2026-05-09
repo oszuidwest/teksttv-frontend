@@ -1,4 +1,5 @@
 import type { TextSlideData } from '../../types'
+import { sanitizeRichText } from '../../utils/sanitize'
 
 export const TextSlide = ({
   content,
@@ -60,7 +61,7 @@ export const TextSlide = ({
         </svg>
         <div
           className="prose relative py-[14px] font-bold text-[49px] text-shadow text-white leading-[1.23em]"
-          dangerouslySetInnerHTML={{ __html: content.body }}
+          dangerouslySetInnerHTML={{ __html: sanitizeRichText(content.body) }}
         />
       </div>
     </div>
