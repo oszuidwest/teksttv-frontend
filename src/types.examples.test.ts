@@ -55,22 +55,36 @@ const imageSlideWithMeta = {
   attribution: 'Photo by John Smith',
 } satisfies ImageSlideData
 
+// Date strings and day_short follow the Dutch format the production CMS
+// emits ("zaterdag 9 mei", day_short "vandaag" for today and "ma"/"di"/...
+// for following days), as documented on WeatherDaySchema.
 const weatherSlide = {
   type: 'weather',
   duration: 20000,
-  title: 'Weather Forecast',
+  title: 'Weerbericht',
   location: 'Roosendaal',
   days: [
     {
-      date: 'monday 12 jan',
-      day_short: 'today',
-      temp_min: 5,
-      temp_max: 12,
+      date: 'zaterdag 9 mei',
+      day_short: 'vandaag',
+      temp_min: 8,
+      temp_max: 20,
       weather_id: 800,
-      description: 'Sunny',
+      description: 'Helder',
       icon: '01d',
-      wind_direction: 'ZW',
+      wind_direction: 'NNO',
       wind_beaufort: 3,
+    },
+    {
+      date: 'zondag 10 mei',
+      day_short: 'zo',
+      temp_min: 9,
+      temp_max: 17,
+      weather_id: 803,
+      description: 'Bewolkt',
+      icon: '04d',
+      wind_direction: 'NNO',
+      wind_beaufort: 4,
     },
   ],
 } satisfies WeatherSlideData
@@ -130,10 +144,8 @@ describe('schema examples accept documented payloads', () => {
     ).not.toThrow()
   })
 
-  test('TickerItemSchema parses each ticker item', () => {
-    for (const item of tickerItems) {
-      expect(() => TickerItemSchema.parse(item)).not.toThrow()
-    }
+  test.each(tickerItems)('TickerItemSchema parses ticker item #%#', (item) => {
+    expect(() => TickerItemSchema.parse(item)).not.toThrow()
   })
 
   test('ChannelPayloadSchema parses full channel payload', () => {
