@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 import type { SlideData, TickerItem } from '../types'
 import { SlideDataSchema, TickerItemSchema } from '../types'
 
@@ -8,6 +8,189 @@ const navEnabled = (() => {
   return new URLSearchParams(window.location.search).has('nav')
 })()
 
+interface State {
+  slides: SlideData[]
+  nextSlides: SlideData[]
+  currentSlide: number
+  tickerItems: TickerItem[]
+  nextTickerItems: TickerItem[]
+  tickerIndex: number
+  imagesToPreload: string[]
+  paused: boolean
+}
+
+type Action =
+  | {
+      type: 'LOAD_INITIAL'
+      slides: SlideData[]
+      ticker: TickerItem[]
+      imageUrls: string[]
+    }
+  | {
+      type: 'LOAD_NEXT'
+      slides: SlideData[]
+      ticker: TickerItem[]
+      imageUrls: string[]
+    }
+  | { type: 'TICK' }
+  | { type: 'NAV_PREV' }
+  | { type: 'NAV_NEXT' }
+  | { type: 'TOGGLE_PAUSE' }
+
+const initialState: State = {
+  slides: [],
+  nextSlides: [],
+  currentSlide: 0,
+  tickerItems: [],
+  nextTickerItems: [],
+  tickerIndex: 0,
+  imagesToPreload: [],
+  paused: false,
+}
+
+function imageUrlsFor(slides: SlideData[]): string[] {
+  return slides.flatMap((slide) => {
+    switch (slide.type) {
+      case 'text':
+        return slide.image?.url ? [slide.image.url] : []
+      case 'image':
+      case 'commercial':
+      case 'commercial_transition':
+        return [slide.url]
+      default:
+        return []
+    }
+  })
+}
+
+function getValidSlides(value: unknown, source: string): SlideData[] {
+  if (!Array.isArray(value)) {
+    console.error(`Invalid slides payload from ${source}: expected array`)
+    return []
+  }
+
+  return value.flatMap((entry, index) => {
+    const parsed = SlideDataSchema.safeParse(entry)
+    if (!parsed.success) {
+      console.error(
+        `Skipping invalid slide ${index} from ${source}`,
+        parsed.error.issues,
+      )
+      return []
+    }
+    return [parsed.data]
+  })
+}
+
+function getValidTickerItems(value: unknown, source: string): TickerItem[] {
+  if (!Array.isArray(value)) {
+    console.error(`Invalid ticker payload from ${source}: expected array`)
+    return []
+  }
+
+  return value.flatMap((entry, index) => {
+    const parsed = TickerItemSchema.safeParse(entry)
+    if (!parsed.success) {
+      console.error(
+        `Skipping invalid ticker item ${index} from ${source}`,
+        parsed.error.issues,
+      )
+      return []
+    }
+    return [parsed.data]
+  })
+}
+
+function carouselReducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'LOAD_INITIAL':
+      return {
+        ...state,
+        slides: action.slides,
+        tickerItems: action.ticker,
+        imagesToPreload: action.imageUrls,
+      }
+
+    case 'LOAD_NEXT':
+      return {
+        ...state,
+        nextSlides: action.slides,
+        nextTickerItems: action.ticker,
+        imagesToPreload: [
+          ...new Set([...state.imagesToPreload, ...action.imageUrls]),
+        ],
+      }
+
+    case 'TICK': {
+      if (state.slides.length === 0) return state
+
+      const candidate = (state.currentSlide + 1) % state.slides.length
+      const swapSlides = candidate === 0 && state.nextSlides.length > 0
+
+      const slides = swapSlides ? state.nextSlides : state.slides
+      const nextSlides = swapSlides ? [] : state.nextSlides
+      const currentSlide = swapSlides ? 0 : candidate
+      // At a slide-set boundary, drop preloaded URLs that the new set doesn't need.
+      const imagesToPreload = swapSlides
+        ? state.imagesToPreload.filter((url) =>
+            imageUrlsFor(state.nextSlides).includes(url),
+          )
+        : state.imagesToPreload
+
+      let tickerItems = state.tickerItems
+      let nextTickerItems = state.nextTickerItems
+      let tickerIndex: number
+
+      if (state.tickerItems.length === 0) {
+        if (state.nextTickerItems.length > 0) {
+          tickerItems = state.nextTickerItems
+          nextTickerItems = []
+        }
+        tickerIndex = 0
+      } else {
+        const tickerCandidate =
+          (state.tickerIndex + 1) % state.tickerItems.length
+        if (tickerCandidate === 0 && state.nextTickerItems.length > 0) {
+          tickerItems = state.nextTickerItems
+          nextTickerItems = []
+          tickerIndex = 0
+        } else {
+          tickerIndex = tickerCandidate
+        }
+      }
+
+      return {
+        ...state,
+        slides,
+        nextSlides,
+        currentSlide,
+        imagesToPreload,
+        tickerItems,
+        nextTickerItems,
+        tickerIndex,
+      }
+    }
+
+    case 'NAV_PREV':
+      if (state.slides.length === 0) return state
+      return {
+        ...state,
+        currentSlide:
+          (state.currentSlide - 1 + state.slides.length) % state.slides.length,
+      }
+
+    case 'NAV_NEXT':
+      if (state.slides.length === 0) return state
+      return {
+        ...state,
+        currentSlide: (state.currentSlide + 1) % state.slides.length,
+      }
+
+    case 'TOGGLE_PAUSE':
+      return { ...state, paused: !state.paused }
+  }
+}
+
 export function useCarousel({
   apiBase,
   channel,
@@ -15,52 +198,7 @@ export function useCarousel({
   apiBase: string
   channel?: string
 }) {
-  const [slides, setSlides] = useState<SlideData[]>([])
-  const [nextSlides, setNextSlides] = useState<SlideData[]>([])
-  const [currentSlide, setCurrentSlide] = useState(0)
-  const [tickerItems, setTickerItems] = useState<TickerItem[]>([])
-  const [nextTickerItems, setNextTickerItems] = useState<TickerItem[]>([])
-  const [tickerIndex, setTickerIndex] = useState(0)
-  const [imagesToPreload, setImagesToPreload] = useState<string[]>([])
-  const [paused, setPaused] = useState(false)
-
-  const getValidSlides = useCallback((value: unknown, source: string) => {
-    if (!Array.isArray(value)) {
-      console.error(`Invalid slides payload from ${source}: expected array`)
-      return []
-    }
-
-    return value.flatMap((entry, index) => {
-      const parsed = SlideDataSchema.safeParse(entry)
-      if (!parsed.success) {
-        console.error(
-          `Skipping invalid slide ${index} from ${source}`,
-          parsed.error.issues,
-        )
-        return []
-      }
-      return [parsed.data]
-    })
-  }, [])
-
-  const getValidTickerItems = useCallback((value: unknown, source: string) => {
-    if (!Array.isArray(value)) {
-      console.error(`Invalid ticker payload from ${source}: expected array`)
-      return []
-    }
-
-    return value.flatMap((entry, index) => {
-      const parsed = TickerItemSchema.safeParse(entry)
-      if (!parsed.success) {
-        console.error(
-          `Skipping invalid ticker item ${index} from ${source}`,
-          parsed.error.issues,
-        )
-        return []
-      }
-      return [parsed.data]
-    })
-  }, [])
+  const [state, dispatch] = useReducer(carouselReducer, initialState)
 
   const fetchData = useCallback(
     async (isInitialLoad: boolean) => {
@@ -99,54 +237,27 @@ export function useCarousel({
           tickerData = rawTickerData
         }
 
-        const newSlides = getValidSlides(
-          slidesData,
-          channel ? `channel ${channel}` : 'slides endpoint',
-        )
-        const newTickerItems = getValidTickerItems(
-          tickerData,
-          channel ? `channel ${channel}` : 'ticker endpoint',
-        )
+        const source = channel ? `channel ${channel}` : 'feed'
+        const newSlides = getValidSlides(slidesData, source)
+        const newTickerItems = getValidTickerItems(tickerData, source)
 
         if (newSlides.length === 0) {
           throw new Error('Feed returned no valid slides')
         }
 
-        const imageUrls = [
-          ...new Set(
-            newSlides
-              .flatMap((slide: SlideData) => {
-                switch (slide.type) {
-                  case 'text':
-                    return slide.image?.url
-                  case 'image':
-                  case 'commercial':
-                  case 'commercial_transition':
-                    return slide.url
-                  default:
-                    return undefined
-                }
-              })
-              .filter(Boolean),
-          ),
-        ] as string[]
+        const imageUrls = [...new Set(imageUrlsFor(newSlides))]
 
-        if (isInitialLoad) {
-          setSlides(newSlides)
-          setTickerItems(newTickerItems)
-          setImagesToPreload(imageUrls)
-        } else {
-          setNextSlides(newSlides)
-          setNextTickerItems(newTickerItems)
-          setImagesToPreload((prevUrls) => [
-            ...new Set([...prevUrls, ...imageUrls]),
-          ])
-        }
+        dispatch({
+          type: isInitialLoad ? 'LOAD_INITIAL' : 'LOAD_NEXT',
+          slides: newSlides,
+          ticker: newTickerItems,
+          imageUrls,
+        })
       } catch (error) {
         console.error('Error fetching data:', error)
       }
     },
-    [apiBase, channel, getValidSlides, getValidTickerItems],
+    [apiBase, channel],
   )
 
   useEffect(() => {
@@ -158,104 +269,58 @@ export function useCarousel({
       () => {
         fetchData(false)
       },
-      slides.length > 0 ? 5 * 60 * 1000 : 60 * 1000,
+      state.slides.length > 0 ? 5 * 60 * 1000 : 60 * 1000,
     )
 
     return () => clearInterval(fetchInterval)
-  }, [fetchData, slides.length])
+  }, [fetchData, state.slides.length])
 
   useEffect(() => {
     if (!navEnabled) return
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (slides.length === 0) return
+      if (state.slides.length === 0) return
 
       if (e.key === ' ') {
         e.preventDefault()
-        setPaused((p) => !p)
+        dispatch({ type: 'TOGGLE_PAUSE' })
       } else if (e.key === 'ArrowRight') {
-        setCurrentSlide((prev) => (prev + 1) % slides.length)
+        dispatch({ type: 'NAV_NEXT' })
       } else if (e.key === 'ArrowLeft') {
-        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
+        dispatch({ type: 'NAV_PREV' })
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [slides.length])
+  }, [state.slides.length])
 
   useEffect(() => {
-    if (slides.length === 0) return
-    if (paused) return
+    if (state.slides.length === 0) return
+    if (state.paused) return
     const currentDuration =
-      slides[currentSlide]?.duration ?? slides[0]?.duration
+      state.slides[state.currentSlide]?.duration ?? state.slides[0]?.duration
     if (!currentDuration) return
 
     const timer = setInterval(() => {
-      const advance = () => {
-        setCurrentSlide((prevSlide) => {
-          if (slides.length === 0) return 0
-          const nextSlide = (prevSlide + 1) % slides.length
-          if (nextSlide === 0 && nextSlides.length > 0) {
-            setSlides(nextSlides)
-            setNextSlides([])
-            setImagesToPreload((prevUrls) => {
-              const newImageUrls = nextSlides
-                .flatMap((slide) => {
-                  switch (slide.type) {
-                    case 'text':
-                      return slide.image?.url
-                    case 'image':
-                    case 'commercial':
-                    case 'commercial_transition':
-                      return slide.url
-                    default:
-                      return undefined
-                  }
-                })
-                .filter(Boolean)
-              return prevUrls.filter((url) => newImageUrls.includes(url))
-            })
-            return 0
-          }
-          return nextSlide
-        })
-
-        setTickerIndex((prevIndex) => {
-          if (tickerItems.length === 0) {
-            if (nextTickerItems.length > 0) {
-              setTickerItems(nextTickerItems)
-              setNextTickerItems([])
-            }
-            return 0
-          }
-          const nextIndex = (prevIndex + 1) % tickerItems.length
-          if (nextIndex === 0 && nextTickerItems.length > 0) {
-            setTickerItems(nextTickerItems)
-            setNextTickerItems([])
-            return 0
-          }
-          return nextIndex
-        })
-      }
-
+      const tick = () => dispatch({ type: 'TICK' })
       if (document.startViewTransition) {
-        document.startViewTransition(advance)
+        document.startViewTransition(tick)
       } else {
-        advance()
+        tick()
       }
     }, currentDuration)
 
     return () => clearInterval(timer)
-  }, [slides, currentSlide, nextSlides, tickerItems, nextTickerItems, paused])
+  }, [state.slides, state.currentSlide, state.paused])
 
   return {
-    slides,
-    currentSlide,
-    tickerItems,
-    tickerIndex,
-    imagesToPreload,
-    paused,
+    slides: state.slides,
+    currentSlide: state.currentSlide,
+    tickerItems: state.tickerItems,
+    tickerIndex: state.tickerIndex,
+    imagesToPreload: state.imagesToPreload,
+    paused: state.paused,
     navEnabled,
   }
 }
