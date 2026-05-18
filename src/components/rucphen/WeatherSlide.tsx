@@ -88,10 +88,10 @@ export function WeatherSlide({
       <div className="absolute inset-0 flex flex-col">
         {/* Title bar — matching TextSlide style */}
         <div className="z-20 mt-[92px] flex w-full items-baseline justify-between bg-[#626671] px-[116px] py-[14px]">
-          <h1 className="font-bold text-[51px] text-shadow text-white uppercase tracking-wide">
+          <h1 className="font-bold text-[51px] text-shadow-brand text-white uppercase tracking-wide">
             Weerbericht
           </h1>
-          <span className="text-[36px] text-shadow text-white/70">
+          <span className="text-[36px] text-shadow-brand text-white/70">
             Weerstation {content.location}
           </span>
         </div>
@@ -107,7 +107,7 @@ export function WeatherSlide({
               >
                 {/* Day name */}
                 <div className="w-[400px] shrink-0 py-[16px] pl-[48px]">
-                  <span className="font-bold text-[42px] text-shadow text-white uppercase leading-none">
+                  <span className="font-bold text-[42px] text-shadow-brand text-white uppercase leading-none">
                     {day.day_short === 'vandaag'
                       ? 'Vandaag'
                       : day.date.split(' ')[0]}
@@ -131,7 +131,7 @@ export function WeatherSlide({
                       if (img.src !== fallback) img.src = fallback
                     }}
                   />
-                  <span className="text-[28px] text-shadow text-white leading-tight">
+                  <span className="text-[28px] text-shadow-brand text-white leading-tight">
                     {day.description}
                   </span>
                 </div>
@@ -178,7 +178,7 @@ export function WeatherSlide({
                   </svg>
                   <WindArrow direction={day.wind_direction} />
                   <div className="flex flex-col">
-                    <span className="font-bold text-[28px] text-shadow text-white leading-none">
+                    <span className="font-bold text-[28px] text-shadow-brand text-white leading-none">
                       {day.wind_direction}
                     </span>
                     <span className="mt-[4px] text-[24px] text-white/70 leading-none">
