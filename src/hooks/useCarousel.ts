@@ -207,7 +207,7 @@ export function useCarousel({
         let tickerData: unknown
 
         if (channel) {
-          const response = await fetch(`${apiBase}/teksttv?channel=${channel}`)
+          const response = await fetch(`${apiBase}?channel=${channel}`)
           if (!response.ok) {
             throw new Error(
               `Unable to fetch channel feed (status ${response.status})`,
