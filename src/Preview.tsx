@@ -15,9 +15,15 @@ function base64ToBytes(base64: string) {
 }
 
 interface SlideComponents {
-  text: ComponentType<{ content: TextSlideData }>
-  image: ComponentType<{ content: FullScreenSlideData }>
-  weather?: ComponentType<{ content: WeatherSlideData }>
+  text: ComponentType<{ content: TextSlideData; children?: React.ReactNode }>
+  image: ComponentType<{
+    content: FullScreenSlideData
+    children?: React.ReactNode
+  }>
+  weather?: ComponentType<{
+    content: WeatherSlideData
+    children?: React.ReactNode
+  }>
 }
 
 interface PreviewProps {
@@ -68,24 +74,29 @@ export default function Preview({ slides, Ticker, Frame }: PreviewProps) {
     const ImageSlide = slides.image
     const WeatherSlide = slides.weather
 
+    const tickerElement = (
+      <Ticker
+        items={[{ message: 'Dit is een preview slide' }]}
+        currentIndex={0}
+      />
+    )
+
     let slide: React.ReactNode
     if (validatedData.type === 'text') {
-      slide = <TextSlide content={validatedData} />
+      slide = <TextSlide content={validatedData}>{tickerElement}</TextSlide>
     } else if (validatedData.type === 'weather' && WeatherSlide) {
-      slide = <WeatherSlide content={validatedData} />
+      slide = (
+        <WeatherSlide content={validatedData}>{tickerElement}</WeatherSlide>
+      )
     } else {
-      slide = <ImageSlide content={validatedData as FullScreenSlideData} />
+      slide = (
+        <ImageSlide content={validatedData as FullScreenSlideData}>
+          {tickerElement}
+        </ImageSlide>
+      )
     }
 
-    const content = (
-      <>
-        {slide}
-        <Ticker
-          items={[{ message: 'Dit is een preview slide' }]}
-          currentIndex={0}
-        />
-      </>
-    )
+    const content = <>{slide}</>
 
     return (
       <div ref={containerRef} className="relative h-[1080px] w-[1920px]">
