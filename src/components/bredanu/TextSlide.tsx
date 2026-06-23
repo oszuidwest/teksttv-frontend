@@ -17,7 +17,7 @@ function Header({ title }: { title: string }) {
 
 function Body({ content }: { content: TextSlideData }) {
   return (
-    <div className="flex h-full gap-8">
+    <div className="flex h-full w-full gap-8">
       {content.image?.url && (
         <div className="relative w-[343px] overflow-hidden bg-black">
           <img
