@@ -2,7 +2,7 @@ import type { TextSlideData } from '../../types'
 import { ImageMeta } from './ImageMeta'
 
 const bodyText =
-  'font-bahnschrift font-normal text-[35px] text-black leading-[1.46] [&_p+p]:mt-[0.85em]'
+  'font-bahnschrift font-normal text-[42px] text-black leading-[1.46] [&_p+p]:mt-[0.85em]'
 
 function Header({ title }: { title: string }) {
   return (
