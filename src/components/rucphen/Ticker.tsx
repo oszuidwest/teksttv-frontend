@@ -11,7 +11,7 @@ export const Ticker = ({
   if (items.length === 0) return null
 
   return (
-    <div className="absolute right-0 bottom-[91px] left-0 z-30 flex items-center bg-black font-bold font-tahoma text-[#F7BF19] text-[51px] tracking-wide">
+    <div className="font-tahoma absolute right-0 bottom-[91px] left-0 z-30 flex items-center bg-black text-[51px] font-bold tracking-wide text-[#F7BF19]">
       <span className="min-w-0 grow truncate pl-[121px]">
         {items[currentIndex].message}
       </span>

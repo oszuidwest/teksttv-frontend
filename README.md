@@ -46,11 +46,11 @@ bun run fix:unsafe  # Auto-fix including unsafe fixes (e.g. Tailwind class sorti
 
 You can manually navigate through slides using keyboard shortcuts:
 
-| Key | Action |
-|-----|--------|
+| Key     | Action                      |
+| ------- | --------------------------- |
 | `Space` | Pause / resume auto-advance |
-| `→` | Next slide |
-| `←` | Previous slide |
+| `→`     | Next slide                  |
+| `←`     | Previous slide              |
 
 A small overlay in the top-right corner shows the current playback state and slide number.
 
@@ -60,9 +60,9 @@ In development mode (`bun run dev`), navigation is always enabled. In production
 
 Any channel page can be pointed at an arbitrary feed via query parameters, keeping that page's theme. The app has two fetch modes:
 
-| Parameter | Effect |
-|-----------|--------|
-| `?feed=<url>` | Overrides this page's feed endpoint or API prefix |
+| Parameter         | Effect                                                           |
+| ----------------- | ---------------------------------------------------------------- |
+| `?feed=<url>`     | Overrides this page's feed endpoint or API prefix                |
 | `?channel=<slug>` | Enables channel-payload mode and fetches `<feed>?channel=<slug>` |
 
 Pages with a built-in channel, such as `/zuidwest-1/` and `/zuidwest-2/`, use channel-payload mode by default. Their `apiBase` is the full payload endpoint and the app fetches `{ slides, ticker }` from `<feed>?channel=<slug>`.
@@ -81,10 +81,10 @@ Before committing, run `bun run check` to verify your changes pass CI. If there 
 
 Two GitHub Actions workflows handle automation:
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
+| Workflow    | Trigger  | Purpose                                                                              |
+| ----------- | -------- | ------------------------------------------------------------------------------------ |
 | **Quality** | Push, PR | Auto-fixes style issues, then runs `bun run check` (Astro, TypeScript, tests, Biome) |
-| **Release** | Manual | Runs quality checks, builds, and creates a GitHub release |
+| **Release** | Manual   | Runs quality checks, builds, and creates a GitHub release                            |
 
 The Release workflow only creates a new release if the version in `package.json` differs from the latest Git tag. Pre-release versions (containing `alpha`, `beta`, or `rc`) are marked accordingly.
 
@@ -95,27 +95,32 @@ All slides are 1920x1080 pixels. Each slide has a `duration` (in milliseconds) t
 > **Note:** The `caption` and `attribution` fields on text and image slides are rendered only by **BredaNu**. The ZuidWest and Rucphen templates ignore these fields, so they will not appear on screen there.
 
 ### Text Slide
+
 - **Type**: `text`
 - Displays a title and body text with an optional sidebar image.
 - Supports HTML in title and body fields.
 - The `image` field is an object with `url`, optional `caption`, and optional `attribution`.
 
 ### Image Slide
+
 - **Type**: `image`
 - Displays a full-screen image.
 - Supports optional `caption` and `attribution` fields.
 
 ### Weather Slide
+
 - **Type**: `weather`
 - Shows a multi-day weather forecast with temperature color coding.
 - Displays location, date, temperature range, wind info, and weather icons.
 
 ### Commercial Slides
+
 - **Type**: `commercial` or `commercial_transition`
 - Full-screen images for advertisements.
 - Rendered identically to image slides.
 
 ### Iframe Slide
+
 - **Type**: `iframe`
 - Embeds an external page (e.g. a dashboard) full-screen via an `<iframe>`.
 - Only rendered by themes that provide an `iframe` slide component.

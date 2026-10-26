@@ -16,7 +16,7 @@ export function SlideShell({
       style={{ backgroundColor: themes[theme].accent, width: '1650px' }}
     >
       <div
-        className="relative ml-[2px] flex flex-1 flex-col overflow-hidden rounded-tl-[40px] rounded-tr-[40px] font-nunito"
+        className="font-nunito relative ml-[2px] flex flex-1 flex-col overflow-hidden rounded-tl-[40px] rounded-tr-[40px]"
         style={{ backgroundColor: themes[theme].surface }}
       >
         {children}

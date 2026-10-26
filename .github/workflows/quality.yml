@@ -25,7 +25,7 @@ jobs:
         id: auto-commit
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: 'style: auto-fix linting and formatting'
+          commit_message: "style: auto-fix linting and formatting"
       - name: Check
         run: bun run check
       - name: Report status on auto-fix commit

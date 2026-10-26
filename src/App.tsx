@@ -62,9 +62,9 @@ function App({ apiBase, channel, slides, Ticker, Frame }: AppProps) {
     if (error) {
       return (
         <div className="flex h-[1080px] w-[1920px] items-center justify-center bg-black p-24 text-white">
-          <div className="max-w-[1180px] border-red-500 border-l-8 bg-zinc-950 px-12 py-10 shadow-2xl">
-            <h1 className="mb-6 font-bold text-6xl">Feed niet beschikbaar</h1>
-            <p className="mb-6 break-words text-4xl leading-tight">{error}</p>
+          <div className="max-w-[1180px] border-l-8 border-red-500 bg-zinc-950 px-12 py-10 shadow-2xl">
+            <h1 className="mb-6 text-6xl font-bold">Feed niet beschikbaar</h1>
+            <p className="mb-6 text-4xl leading-tight break-words">{error}</p>
             <p className="text-2xl text-zinc-300">
               Controleer de feed-url, channel-parameter, CORS en JSON-output. De
               app probeert automatisch opnieuw te laden.
@@ -124,7 +124,7 @@ function App({ apiBase, channel, slides, Ticker, Frame }: AppProps) {
     <div className="relative h-[1080px] w-[1920px]">
       {Frame ? <Frame>{content}</Frame> : content}
       {navEnabled && (
-        <div className="absolute top-2 right-2 z-50 rounded bg-black/70 px-3 py-1.5 font-mono text-white text-xs">
+        <div className="absolute top-2 right-2 z-50 rounded bg-black/70 px-3 py-1.5 font-mono text-xs text-white">
           {paused ? '⏸' : '▶'} {currentSlide + 1}/{slideData.length}
         </div>
       )}

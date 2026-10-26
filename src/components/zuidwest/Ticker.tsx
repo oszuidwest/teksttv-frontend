@@ -28,13 +28,13 @@ export function Ticker({
 
   return (
     <div
-      className="flex h-[68px] items-center rounded-bl-[40px] font-nunito"
+      className="font-nunito flex h-[68px] items-center rounded-bl-[40px]"
       style={{ backgroundColor: c.tickerBg }}
     >
       <div className="flex items-center pl-[56px]">
         {label && (
           <span
-            className="font-black text-[40px] text-black leading-none"
+            className="text-[40px] leading-none font-black text-black"
             dangerouslySetInnerHTML={{ __html: label }}
           />
         )}
@@ -55,7 +55,7 @@ export function Ticker({
         )}
 
         <span
-          className="font-[500] text-[#1d1d1b] text-[40px] leading-none"
+          className="text-[40px] leading-none font-[500] text-[#1d1d1b]"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>

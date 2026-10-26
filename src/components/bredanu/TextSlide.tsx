@@ -6,9 +6,9 @@ const bodyText =
 
 function Header({ title }: { title: string }) {
   return (
-    <header className="flex h-[112px] w-full flex-shrink-0 items-center bg-bredanu-gray px-6 font-bahnschrift text-white">
+    <header className="bg-bredanu-gray font-bahnschrift flex h-[112px] w-full flex-shrink-0 items-center px-6 text-white">
       <h1
-        className="font-inter font-semibold text-[48px] leading-[1.08]"
+        className="font-inter text-[48px] leading-[1.08] font-semibold"
         dangerouslySetInnerHTML={{ __html: title }}
       />
     </header>
@@ -28,7 +28,7 @@ function Body({ content }: { content: TextSlideData }) {
           <ImageMeta image={content.image} />
         </div>
       )}
-      <div className="flex-1 overflow-hidden bg-white px-8 py-6 font-bahnschrift">
+      <div className="font-bahnschrift flex-1 overflow-hidden bg-white px-8 py-6">
         <div
           className={bodyText}
           dangerouslySetInnerHTML={{ __html: content.body }}

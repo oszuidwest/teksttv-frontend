@@ -7,7 +7,7 @@ export const TextSlide = ({
   content: TextSlideData
   children?: React.ReactNode
 }) => (
-  <div className="relative h-full w-full bg-[#BBBBBB] font-tahoma">
+  <div className="font-tahoma relative h-full w-full bg-[#BBBBBB]">
     <div className="sidebar absolute inset-0 inset-y-0 left-0 z-10 w-[604px] bg-[#F7BF19]">
       {content.image?.url && (
         <img
@@ -38,7 +38,7 @@ export const TextSlide = ({
 
     <div className="absolute inset-0 flex flex-col">
       <div className="z-20 mt-[92px] w-full bg-[#626671] px-[116px] py-[14px]">
-        <h1 className="font-bold text-[51px] text-shadow text-white uppercase tracking-wide">
+        <h1 className="text-shadow text-[51px] font-bold tracking-wide text-white uppercase">
           {content.title}
         </h1>
       </div>
@@ -59,7 +59,7 @@ export const TextSlide = ({
           />
         </svg>
         <div
-          className="prose relative py-[14px] font-bold text-[49px] text-shadow text-white leading-[1.23em]"
+          className="prose text-shadow relative py-[14px] text-[49px] leading-[1.23em] font-bold text-white"
           dangerouslySetInnerHTML={{ __html: content.body }}
         />
       </div>
