@@ -22,7 +22,7 @@
         "useHookAtTopLevel": "error"
       },
       "nursery": {
-        "useSortedClasses": "error"
+        "useTailwindSortedClasses": "error"
       },
       "style": {
         "noNonNullAssertion": "off",

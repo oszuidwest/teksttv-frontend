@@ -39,13 +39,13 @@ export function WeatherSlide({
           className="mr-[22px] w-[40px]"
           style={{ transform: 'scale(1.8) translate(3px, -1px)' }}
         />
-        <span className="font-[600] text-[#1d1d1b] text-[32px] leading-none">
+        <span className="text-[32px] leading-none font-[600] text-[#1d1d1b]">
           Weerstation {content.location}
         </span>
       </div>
 
       <div className="px-[56px] pt-[36px] pb-[20px]">
-        <h1 className="font-black text-[#1d1d1b] text-[58px] leading-[59px]">
+        <h1 className="text-[58px] leading-[59px] font-black text-[#1d1d1b]">
           Weer
         </h1>
       </div>
@@ -61,7 +61,7 @@ export function WeatherSlide({
             }}
           >
             <div
-              className={`${colDay} flex items-center font-bold text-[#1d1d1b] text-[42px]`}
+              className={`${colDay} flex items-center text-[42px] font-bold text-[#1d1d1b]`}
             >
               {day.day_short === 'vandaag'
                 ? day.day_short
@@ -79,7 +79,7 @@ export function WeatherSlide({
             </div>
 
             <div
-              className={`${colMax} flex items-center justify-center font-[800] text-[44px]`}
+              className={`${colMax} flex items-center justify-center text-[44px] font-[800]`}
               style={tempStyle(day.temp_max)}
             >
               {day.temp_max}°
@@ -98,7 +98,7 @@ export function WeatherSlide({
                 stroke="#000"
                 className="size-[68px] shrink-0"
               />
-              <span className="font-[600] text-[#1d1d1b] text-[32px] leading-none">
+              <span className="text-[32px] leading-none font-[600] text-[#1d1d1b]">
                 {day.wind_direction}
                 <br />
                 {day.wind_beaufort}-{day.wind_beaufort + 1} Bft
@@ -116,11 +116,11 @@ export function WeatherSlide({
               width: `calc(264px + 120px + 40px + 136px)`,
             }}
           >
-            <span className="pl-[24px] font-[600] text-[35px]">
+            <span className="pl-[24px] text-[35px] font-[600]">
               klimaatgemiddelde
             </span>
             <div
-              className={`${colMax} ml-auto flex items-center justify-center font-[800] text-[44px]`}
+              className={`${colMax} ml-auto flex items-center justify-center text-[44px] font-[800]`}
             >
               {avgMax}°
             </div>

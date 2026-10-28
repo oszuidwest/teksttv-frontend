@@ -13,7 +13,7 @@ export function WeatherSlide({
   const days = content.days.slice(0, 5)
 
   return (
-    <div className="relative h-full w-full bg-[#BBBBBB] font-tahoma">
+    <div className="font-tahoma relative h-full w-full bg-[#BBBBBB]">
       {/* Rucphen diagonal signature gradient. */}
       <svg
         className="absolute inset-0 z-5 h-full w-full"
@@ -36,10 +36,10 @@ export function WeatherSlide({
 
       <div className="absolute inset-0 flex flex-col">
         <div className="z-20 mt-[92px] flex w-full items-baseline justify-between bg-[#626671] px-[116px] py-[14px]">
-          <h1 className="font-bold text-[51px] text-shadow text-white uppercase tracking-wide">
+          <h1 className="text-shadow text-[51px] font-bold tracking-wide text-white uppercase">
             Weerbericht
           </h1>
-          <span className="text-[36px] text-shadow text-white/70">
+          <span className="text-shadow text-[36px] text-white/70">
             Weerstation {content.location}
           </span>
         </div>
@@ -52,13 +52,13 @@ export function WeatherSlide({
                 className="relative flex w-full items-center bg-[#5c6069]"
               >
                 <div className="w-[400px] shrink-0 py-[16px] pl-[48px]">
-                  <span className="font-bold text-[42px] text-shadow text-white uppercase leading-none">
+                  <span className="text-shadow text-[42px] leading-none font-bold text-white uppercase">
                     {day.day_short === 'vandaag'
                       ? 'Vandaag'
                       : day.date.split(' ')[0]}
                   </span>
                   {day.day_short !== 'vandaag' && (
-                    <span className="mt-[2px] block text-[24px] text-white/60 leading-none">
+                    <span className="mt-[2px] block text-[24px] leading-none text-white/60">
                       {day.date.split(' ').slice(1).join(' ')}
                     </span>
                   )}
@@ -70,7 +70,7 @@ export function WeatherSlide({
                     alt={day.description}
                     className="size-[80px] shrink-0"
                   />
-                  <span className="text-[28px] text-shadow text-white leading-tight">
+                  <span className="text-shadow text-[28px] leading-tight text-white">
                     {day.description}
                   </span>
                 </div>
@@ -78,7 +78,7 @@ export function WeatherSlide({
                 {/* Diagonal pills match the Rucphen row geometry. */}
                 <div className="flex shrink-0 items-center gap-[4px]">
                   <div
-                    className="flex h-[64px] w-[110px] items-center justify-center font-bold text-[44px] leading-none"
+                    className="flex h-[64px] w-[110px] items-center justify-center text-[44px] leading-none font-bold"
                     style={{
                       ...tempStyle(day.temp_max),
                       clipPath:
@@ -121,10 +121,10 @@ export function WeatherSlide({
                     className="size-[48px] shrink-0"
                   />
                   <div className="flex flex-col">
-                    <span className="font-bold text-[28px] text-shadow text-white leading-none">
+                    <span className="text-shadow text-[28px] leading-none font-bold text-white">
                       {day.wind_direction}
                     </span>
-                    <span className="mt-[4px] text-[24px] text-white/70 leading-none">
+                    <span className="mt-[4px] text-[24px] leading-none text-white/70">
                       {day.wind_beaufort} Bft
                     </span>
                   </div>

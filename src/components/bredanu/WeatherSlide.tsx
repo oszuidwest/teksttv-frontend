@@ -83,10 +83,10 @@ function DayCard({ day, isToday }: { day: WeatherDay; isToday: boolean }) {
       style={isToday ? { boxShadow: 'inset 0 7px 0 0 #fcd800' } : undefined}
     >
       <div className="flex flex-col items-center">
-        <div className="font-inter font-semibold text-[#23211f] text-[40px] leading-none">
+        <div className="font-inter text-[40px] leading-none font-semibold text-[#23211f]">
           {capitalize(day.day_short)}
         </div>
-        <div className="mt-[7px] font-bahnschrift text-[#7a7a76] text-[23px] leading-none">
+        <div className="font-bahnschrift mt-[7px] text-[23px] leading-none text-[#7a7a76]">
           {day.date.toLowerCase() === day.day_short.toLowerCase()
             ? ' '
             : day.date}
@@ -121,7 +121,7 @@ function DayCard({ day, isToday }: { day: WeatherDay; isToday: boolean }) {
         }}
       />
 
-      <div className="mb-[14px] flex h-[30px] items-center text-center font-bahnschrift text-[#3c3c3a] text-[24px] leading-none">
+      <div className="font-bahnschrift mb-[14px] flex h-[30px] items-center text-center text-[24px] leading-none text-[#3c3c3a]">
         {day.description}
       </div>
 
@@ -130,7 +130,7 @@ function DayCard({ day, isToday }: { day: WeatherDay; isToday: boolean }) {
           className="flex w-[152px] items-center justify-center rounded-full py-[9px]"
           style={{ backgroundColor: rgb(maxC), color: inkOn(maxC) }}
         >
-          <span className="font-bold font-inter text-[54px] tabular-nums leading-none">
+          <span className="font-inter text-[54px] leading-none font-bold tabular-nums">
             {day.temp_max}°
           </span>
         </div>
@@ -138,7 +138,7 @@ function DayCard({ day, isToday }: { day: WeatherDay; isToday: boolean }) {
           className="flex w-[120px] items-center justify-center rounded-full py-[6px]"
           style={{ backgroundColor: rgb(minC), color: inkOn(minC) }}
         >
-          <span className="font-inter font-semibold text-[34px] tabular-nums leading-none">
+          <span className="font-inter text-[34px] leading-none font-semibold tabular-nums">
             {day.temp_min}°
           </span>
         </div>
@@ -154,7 +154,7 @@ function DayCard({ day, isToday }: { day: WeatherDay; isToday: boolean }) {
         >
           <path d="M12 2.5 L18.5 20 L12 16 L5.5 20 Z" fill="#3c3c3a" />
         </svg>
-        <span className="font-bahnschrift text-[#3c3c3a] text-[26px] leading-none">
+        <span className="font-bahnschrift text-[26px] leading-none text-[#3c3c3a]">
           {day.wind_direction} · {day.wind_beaufort} Bft
         </span>
       </div>
@@ -172,13 +172,13 @@ export function WeatherSlide({
   const days = content.days.slice(0, 5)
 
   return (
-    <div className="relative h-full w-full font-bahnschrift text-black">
+    <div className="font-bahnschrift relative h-full w-full text-black">
       <div className="absolute top-[108px] left-[191px] flex h-[904px] w-[1534px] flex-col items-center gap-8">
-        <header className="flex h-[112px] w-full shrink-0 items-center justify-between bg-bredanu-gray px-[48px]">
-          <h1 className="font-inter font-semibold text-[48px] text-white leading-[1.08]">
+        <header className="bg-bredanu-gray flex h-[112px] w-full shrink-0 items-center justify-between px-[48px]">
+          <h1 className="font-inter text-[48px] leading-[1.08] font-semibold text-white">
             {content.title}
           </h1>
-          <div className="flex items-center gap-[14px] text-bredanu-yellow">
+          <div className="text-bredanu-yellow flex items-center gap-[14px]">
             <svg
               width="34"
               height="34"
@@ -188,7 +188,7 @@ export function WeatherSlide({
             >
               <path d="M12 2c-3.9 0-7 3.1-7 7 0 5 7 13 7 13s7-8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
             </svg>
-            <span className="font-inter font-medium text-[31px] leading-none">
+            <span className="font-inter text-[31px] leading-none font-medium">
               Weerstation {content.location}
             </span>
           </div>

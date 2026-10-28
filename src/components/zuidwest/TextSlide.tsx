@@ -27,11 +27,11 @@ export function TextSlide({
           )}
 
           <h1
-            className="mb-[44px] font-black text-[#1d1d1b] text-[58px] leading-[59px]"
+            className="mb-[44px] text-[58px] leading-[59px] font-black text-[#1d1d1b]"
             dangerouslySetInnerHTML={{ __html: content.title }}
           />
 
-          <div className="font-[500] text-[#1d1d1b] text-[42px] leading-[58px]">
+          <div className="text-[42px] leading-[58px] font-[500] text-[#1d1d1b]">
             <div dangerouslySetInnerHTML={{ __html: content.body }} />
           </div>
         </div>

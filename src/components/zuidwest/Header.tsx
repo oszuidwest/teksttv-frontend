@@ -16,7 +16,7 @@ export function Header({ theme }: { theme: ThemeName }) {
   const c = themes[theme]
 
   return (
-    <div className="absolute top-0 right-0 left-0 z-30 font-nunito">
+    <div className="font-nunito absolute top-0 right-0 left-0 z-30">
       <img
         src="/logos/top-bar.svg"
         alt=""
@@ -39,13 +39,13 @@ export function Header({ theme }: { theme: ThemeName }) {
           <circle cx="20" cy="20" r="18" />
           <polyline points="20,10 20,20 12,20" />
         </svg>
-        <span className="font-bold text-[38px] text-white leading-none">
+        <span className="text-[38px] leading-none font-bold text-white">
           <Clock />
         </span>
       </div>
 
       <div className="absolute top-[73px] left-[393px] flex h-[54px] items-center rounded-full border-2 border-white px-[24px]">
-        <span className="font-bold text-[38px] text-white leading-none">
+        <span className="text-[38px] leading-none font-bold text-white">
           <DateDisplay />
         </span>
       </div>

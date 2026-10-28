@@ -13,7 +13,9 @@ function makeKit(theme: ThemeName): SlideKit {
       image: ImageSlide,
       weather: (p) => <WeatherSlide {...p} theme={theme} />,
     },
+    // biome-ignore lint/correctness/noComponentHookFactories: makeKit only runs at module scope, so identities stay stable
     Ticker: (p) => <Ticker {...p} theme={theme} />,
+    // biome-ignore lint/correctness/noComponentHookFactories: makeKit only runs at module scope, so identities stay stable
     Frame: (p) => <Frame {...p} theme={theme} />,
   }
 }
