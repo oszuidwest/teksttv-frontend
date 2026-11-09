@@ -21,6 +21,7 @@ Built with Astro, React, TypeScript, and Tailwind CSS 4. Output is 1920x1080, de
 This application is intentionally designed as a "dumb playout" system. It simply plays a playlist defined as JSON. All logic for generating the playlist resides in an external application. This makes it flexible: any CMS that generates a compatible JSON schema can supply the slides.
 
 The app supports multiple channels with different visual themes:
+
 - **ZuidWest TV1** (`/zuidwest-1/`) — green theme
 - **ZuidWest TV2** (`/zuidwest-2/`) — blue theme
 - **Rucphen RTV** (`/rucphen/`) — custom theme
@@ -154,11 +155,13 @@ Preview individual slides at `/{channel}/preview?data={base64}`. Encode a single
 This project is licensed under the Mozilla Public License 2.0 (MPL-2.0).
 
 You may:
+
 - Use the software for any purpose
 - Modify and distribute changes
 - Include it in larger projects under different licenses
 
 If you modify files, you must:
+
 - Make the source code of those changes available
 - Publish modifications under the MPL license
 
