@@ -31,20 +31,20 @@ export function Ticker({
       className="font-nunito flex h-[68px] items-center rounded-bl-[40px]"
       style={{ backgroundColor: c.tickerBg }}
     >
-      <div className="flex items-center pl-[56px]">
+      <div className="flex min-w-0 items-center px-[56px]">
         {label && (
           <span
-            className="text-[40px] leading-none font-black text-black"
+            className="shrink-0 text-[40px] leading-none font-black text-black"
             dangerouslySetInnerHTML={{ __html: label }}
           />
         )}
 
         {label && (
           <svg
-            className="mx-[21px] h-[36px] w-[42px]"
+            className="mx-[21px] h-[36px] w-[42px] shrink-0"
             viewBox="-3 -3 42 36"
             fill="none"
-            stroke={c.accent}
+            stroke={c.tickerArrow}
             strokeWidth="4"
             strokeLinecap="round"
             strokeLinejoin="miter"
@@ -55,7 +55,7 @@ export function Ticker({
         )}
 
         <span
-          className="text-[40px] leading-none font-[500] text-[#1d1d1b]"
+          className="h-[68px] truncate text-[40px] leading-[68px] font-[500] text-[#1d1d1b]"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>

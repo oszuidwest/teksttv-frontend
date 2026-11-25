@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import ZuidWestApp from '../../ZuidWestApp.tsx'
+---
+
+<Layout title="TekstTV - De Baronie">
+  <ZuidWestApp client:only="react" theme="baronie" apiBase="https://bredanu.nl/wp-json/teksttv/v1/slides" channel="bredanu" />
+</Layout>

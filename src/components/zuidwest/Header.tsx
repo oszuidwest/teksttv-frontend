@@ -18,7 +18,7 @@ export function Header({ theme }: { theme: ThemeName }) {
   return (
     <div className="font-nunito absolute top-0 right-0 left-0 z-30">
       <img
-        src="/logos/top-bar.svg"
+        src={`/logos/${theme}.svg`}
         alt=""
         className="absolute top-0 left-0 h-[160px] w-[1920px]"
       />
@@ -31,7 +31,7 @@ export function Header({ theme }: { theme: ThemeName }) {
           className="mr-[10px] size-[36px]"
           viewBox="0 0 40 40"
           fill="none"
-          stroke={c.accentMid}
+          stroke={c.clockIcon}
           strokeWidth="4"
           strokeLinecap="round"
           strokeLinejoin="round"

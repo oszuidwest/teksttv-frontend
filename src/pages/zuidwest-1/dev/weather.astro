@@ -8,10 +8,10 @@ import { DevOverlay } from '../../../components/DevOverlay'
 
 <Layout title="Dev - ZuidWest Weather">
   <div class="relative h-[1080px] w-[1920px]">
-    <Frame client:only="react" theme="green">
+    <Frame client:only="react" theme="baronie">
       <WeatherSlide
         client:only="react"
-        theme="green"
+        theme="baronie"
         content={{
           type: 'weather',
           duration: 15000,
@@ -31,7 +31,7 @@ import { DevOverlay } from '../../../components/DevOverlay'
       >
         <Ticker
           client:only="react"
-          theme="green"
+          theme="baronie"
           items={[{ message: 'Morgen op TV: Talkshow M\u00B2' }]}
           currentIndex={0}
         />

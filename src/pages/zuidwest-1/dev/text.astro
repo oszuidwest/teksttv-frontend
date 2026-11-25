@@ -8,10 +8,10 @@ import { DevOverlay } from '../../../components/DevOverlay'
 
 <Layout title="Dev - ZuidWest Text (no photo)">
   <div class="relative h-[1080px] w-[1920px]">
-    <Frame client:only="react" theme="green">
+    <Frame client:only="react" theme="baronie">
       <TextSlide
         client:only="react"
-        theme="green"
+        theme="baronie"
         content={{
           type: 'text',
           duration: 10000,
@@ -21,7 +21,7 @@ import { DevOverlay } from '../../../components/DevOverlay'
       >
         <Ticker
           client:only="react"
-          theme="green"
+          theme="baronie"
           items={[{ message: 'Morgen op TV: Tijd voor Senioren - Zundert' }]}
           currentIndex={0}
         />
