@@ -4,5 +4,6 @@ import BredaNuApp from '../../BredaNuApp.tsx'
 ---
 
 <Layout title="TekstTV - BredaNu">
-  <BredaNuApp client:only="react" apiBase="https://bredanu.nl/wp-json/teksttv/v1/slides" />
+  <!-- image_layout=portrait asks the CMS for the tall sidebar crop this layout needs; its default now serves the De Baronie layout. -->
+  <BredaNuApp client:only="react" apiBase="https://bredanu.nl/wp-json/teksttv/v1/slides?image_layout=portrait" />
 </Layout>
