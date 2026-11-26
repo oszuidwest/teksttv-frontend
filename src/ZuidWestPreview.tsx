@@ -1,6 +1,7 @@
-import { kitForChannel } from './components/zuidwest/kit'
+import { zuidwestKits } from './components/zuidwest/kit'
+import type { ThemeName } from './components/zuidwest/theme'
 import Preview from './Preview'
 
-export default function ZuidWestPreview(props: { channel: string }) {
-  return <Preview {...kitForChannel(props.channel)} />
+export default function ZuidWestPreview({ theme }: { theme: ThemeName }) {
+  return <Preview {...zuidwestKits[theme]} />
 }

@@ -22,8 +22,9 @@ This application is intentionally designed as a "dumb playout" system. It simply
 
 The app supports multiple channels with different visual themes:
 
-- **ZuidWest TV1** (`/zuidwest-1/`) — green theme
-- **ZuidWest TV2** (`/zuidwest-2/`) — blue theme
+- **Het Markiezaat** (`/zuidwest-1/`) — ZuidWest theme, blue
+- **De Heerlijkheid** (`/zuidwest-2/`) — ZuidWest theme, red
+- **De Baronie** (`/baronie/`) — ZuidWest theme, green; plays the BredaNu feed
 - **Rucphen RTV** (`/rucphen/`) — custom theme
 - **BredaNu** (`/bredanu/`) — yellow theme
 
@@ -66,7 +67,7 @@ Any channel page can be pointed at an arbitrary feed via query parameters, keepi
 | `?feed=<url>`     | Overrides this page's feed endpoint or API prefix                |
 | `?channel=<slug>` | Enables channel-payload mode and fetches `<feed>?channel=<slug>` |
 
-Pages with a built-in channel, such as `/zuidwest-1/` and `/zuidwest-2/`, use channel-payload mode by default. Their `apiBase` is the full payload endpoint and the app fetches `{ slides, ticker }` from `<feed>?channel=<slug>`.
+Pages with a built-in channel, such as `/zuidwest-1/`, `/zuidwest-2/` and `/baronie/`, use channel-payload mode by default. Their `apiBase` is the full payload endpoint and the app fetches `{ slides, ticker }` from `<feed>?channel=<slug>`.
 
 Pages without a built-in channel, such as `/rucphen/`, use split-endpoint mode by default. Their `apiBase` is an API prefix and the app fetches slides from `<feed>/teksttv-slides` and ticker items from `<feed>/teksttv-ticker`. Adding `?channel=<slug>` to these pages switches them to channel-payload mode, so combine it with a `?feed=<url>` that points at a payload endpoint returning `{ slides, ticker }`.
 

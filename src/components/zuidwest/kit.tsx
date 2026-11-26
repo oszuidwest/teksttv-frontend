@@ -1,9 +1,10 @@
 import type { SlideKit } from '../../SlideRenderer'
+import { IframeSlide } from '../IframeSlide'
 import { Frame } from './Frame'
 import { ImageSlide } from './ImageSlide'
 import { TextSlide } from './TextSlide'
 import { Ticker } from './Ticker'
-import { type ThemeName, themeForChannel } from './theme'
+import type { ThemeName } from './theme'
 import { WeatherSlide } from './WeatherSlide'
 
 function makeKit(theme: ThemeName): SlideKit {
@@ -12,6 +13,7 @@ function makeKit(theme: ThemeName): SlideKit {
       text: (p) => <TextSlide {...p} theme={theme} />,
       image: ImageSlide,
       weather: (p) => <WeatherSlide {...p} theme={theme} />,
+      iframe: IframeSlide,
     },
     // biome-ignore lint/correctness/noComponentHookFactories: makeKit only runs at module scope, so identities stay stable
     Ticker: (p) => <Ticker {...p} theme={theme} />,
@@ -21,11 +23,8 @@ function makeKit(theme: ThemeName): SlideKit {
 }
 
 // Module-scope kits keep component identities stable for app and preview.
-const kits: Record<ThemeName, SlideKit> = {
-  green: makeKit('green'),
-  blue: makeKit('blue'),
-}
-
-export function kitForChannel(channel: string): SlideKit {
-  return kits[themeForChannel(channel)]
+export const zuidwestKits: Record<ThemeName, SlideKit> = {
+  baronie: makeKit('baronie'),
+  heerlijkheid: makeKit('heerlijkheid'),
+  markiezaat: makeKit('markiezaat'),
 }
